@@ -5,14 +5,18 @@ myta 未来笔记
 
 通信使用websocket
 
+#en表示 错误号；详情请查看错误表
+#ss表示log_status的值
+
 流程：
 
 1.登陆
 
 登陆api：
-method:post
-初始的log_status=False
-data:{'username':##,'password':##,'log_status':False}
+
+前端使用cookie保存log_status，初始为False
+data:{'method':'sign_in','username':##,'password':##,'log_status':False}
+#暂时不考虑密码加密
 验证成功return:{'log_status':True,'error':0}	
 验证失败return:{'log_status':False,'error':#错误号}
 
@@ -24,11 +28,48 @@ data:{#这个暂不处理}
 
 3.进入index页面:
 (本地版)依赖于本地的存储信息
-(网络版)
-method:post
-data:{'username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
-成功return:{数据格式待定,'error':0}
-失败return:{'error':#ErrorNum}
+(网络版)(理论上,结合本地版,只有第一次登陆,才需要向服务器请求信息,或者是更改了index的内容才向服务器提交信息,其他情况均调用本地的存储! 减少与服务器的交互)
+
+请求数据:
+data:{'method':'index','username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
+成功return:{#数据格式待定,'error':0}
+失败return:{'error':#en}
+
+提交更改:
+data:{'method':'index_modify','username':##,'log_status':#状态,#数据格式待定}
+成功return:{'error':0}
+失败return:{'error':#en}
+
 
 4.进入personal页面
+(本地版)依赖于本地的存储
+(网络版)(同index页面，仅在第一次登陆请求信息，在用户修改信息之后，提交)
+
+请求数据:
+data:{'method':'personal','username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
+成功return:{#数据格式待定,'error':0}
+失败return:{'error':#en}
+
+提交更改:
+data:{'method':'personal_modify','username':##,'log_status':#状态,#数据格式待定}
+成功return:{'error':0}#得到0之后，需要将自己的本地存储的信息进行对应的修改
+失败return:{'error':#en}
+
+5.进入share页面
+(仅有网络版)(仅在本地无该用户的信息时向服务器请求数据,发说说时,也向服务器提交数据,)
+
+#所有的说说前n条会显示到同一页面(以后再讨论,仿照腾讯来做)
+
+请求数据:
+data:{'method':'share','username':##,'log_status':#ss}
+成功return:{'error':0,'interest':[#in]}
+失败return:{'error':#en}
+
+发说说:
+data:{'method':'say','content':##}
+成功return:{'error':0}
+失败return:{'error':#en}
+
+对于说说，每隔5min，服务器会向客户端推送一次，客户端接收到数据，直接保存在本地；
+
 
