@@ -1,0 +1,34 @@
+myta 未来笔记
+
+以下所有的##代表用户输入
+以下的所有数据均以json格式传输
+
+通信使用websocket
+
+流程：
+
+1.登陆
+
+登陆api：
+method:post
+初始的log_status=False
+data:{'username':##,'password':##,'log_status':False}
+验证成功return:{'log_status':True,'error':0}	
+验证失败return:{'log_status':False,'error':#错误号}
+
+2.验证成功，进入index页面
+
+服务器主动发送用户index所需数据
+data:{#这个暂不处理}
+客户端无需返回值
+
+3.进入index页面:
+(本地版)依赖于本地的存储信息
+(网络版)
+method:post
+data:{'username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
+成功return:{数据格式待定,'error':0}
+失败return:{'error':#ErrorNum}
+
+4.进入personal页面
+
