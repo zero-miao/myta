@@ -14,11 +14,10 @@ myta 未来笔记
 
 登陆api：
 
-前端使用cookie保存log_status，初始为False
-data:{'method':'sign_in','username':##,'password':##,'log_status':False}
+data:{'method':'sign_in','username':##,'password':##}
 #暂时不考虑密码加密
-验证成功return:{'log_status':True,'error':0}	
-验证失败return:{'log_status':False,'error':#错误号}
+验证成功return:{'error':0}	
+验证失败return:{'error':#错误号}
 
 2.验证成功，进入index页面
 
@@ -31,12 +30,12 @@ data:{#这个暂不处理}
 (网络版)(理论上,结合本地版,只有第一次登陆,才需要向服务器请求信息,或者是更改了index的内容才向服务器提交信息,其他情况均调用本地的存储! 减少与服务器的交互)
 
 请求数据:
-data:{'method':'index','username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
+data:{'method':'index','username':##} 
 成功return:{#数据格式待定,'error':0}
 失败return:{'error':#en}
 
 提交更改:
-data:{'method':'index_modify','username':##,'log_status':#状态,#数据格式待定}
+data:{'method':'index_modify','username':##,#数据格式待定}
 成功return:{'error':0}
 失败return:{'error':#en}
 
@@ -46,12 +45,12 @@ data:{'method':'index_modify','username':##,'log_status':#状态,#数据格式�
 (网络版)(同index页面，仅在第一次登陆请求信息，在用户修改信息之后，提交)
 
 请求数据:
-data:{'method':'personal','username':##,'log_status':#状态} #后续，将log_status换成一个随机的id
+data:{'method':'personal','username':##}
 成功return:{#数据格式待定,'error':0}
 失败return:{'error':#en}
 
 提交更改:
-data:{'method':'personal_modify','username':##,'log_status':#状态,#数据格式待定}
+data:{'method':'personal_modify','username':##,#数据格式待定}
 成功return:{'error':0}#得到0之后，需要将自己的本地存储的信息进行对应的修改
 失败return:{'error':#en}
 
@@ -61,7 +60,7 @@ data:{'method':'personal_modify','username':##,'log_status':#状态,#数据格�
 #所有的说说前n条会显示到同一页面(以后再讨论,仿照腾讯来做)
 
 请求数据:
-data:{'method':'share','username':##,'log_status':#ss}
+data:{'method':'share','username':##}
 成功return:{'error':0,'interest':[#in]}
 失败return:{'error':#en}
 
@@ -70,6 +69,6 @@ data:{'method':'say','content':##}
 成功return:{'error':0}
 失败return:{'error':#en}
 
-对于说说，每隔5min，服务器会向客户端推送一次，客户端接收到数据，直接保存在本地；
+对于说说，每隔5min，服务器会向客户端推送一次，客户端接收到数据，直接保存在本地
 
 

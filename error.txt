@@ -1,0 +1,5 @@
+error       means
+
+0	no error
+1	帐号密码为空
+2	帐号密码错误
